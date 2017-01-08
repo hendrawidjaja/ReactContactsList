@@ -1,1 +1,1 @@
-React Boilerplate with Sass and Foundation
+ReactJS, Contacts List
