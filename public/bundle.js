@@ -21637,8 +21637,23 @@
 	        key: "updateSearch",
 	        value: function updateSearch(event) {
 	            this.setState({
-	                search: event.target.value.substr(0, 20)
+	                search: event.target.value.substr(0, 20) /* Limit the search field to 20 chars */
 	            });
+	        }
+	    }, {
+	        key: "addContact",
+	        value: function addContact(e) {
+	            e.preventDefault(); /* prevent browser to refresh */
+	            var name = this.refs.name.value; /* get refs value from an input name tag */
+	            var phone = this.refs.phone.value; /* get refs value from an input phone tag */
+	            var id = Math.floor(Math.random() * 100 + 1); /* Using random generator for id nummber */
+	            this.setState({
+	                contacts: this.state.contacts.concat({ id: id, name: name, phone: phone }) /* create a new contact based on the given value from input tag */
+	            });
+
+	            /* reset name and phone */
+	            this.refs.name.value = "";
+	            this.refs.phone.value = "";
 	        }
 	    }, {
 	        key: "render",
@@ -21646,12 +21661,23 @@
 	            var _this2 = this;
 
 	            var filteredContacts = this.props.contacts.filter(function (contact) {
-	                return contact.name.toLowerCase().indexOf(_this2.state.search.toLowerCase()) !== -1;
+	                return contact.name.toLowerCase().indexOf(_this2.state.search.toLowerCase()) !== -1; /* return all related name only */
 	            });
 	            return _react2.default.createElement(
 	                "div",
 	                null,
-	                _react2.default.createElement("input", { type: "text", value: this.state.search, onChange: this.updateSearch.bind(this) }),
+	                _react2.default.createElement("input", { type: "text", value: this.state.search, onChange: this.updateSearch.bind(this), placeholder: "Search Name" }),
+	                _react2.default.createElement(
+	                    "form",
+	                    { onSubmit: this.addContact.bind(this) },
+	                    _react2.default.createElement("input", { type: "text", ref: "name" }),
+	                    _react2.default.createElement("input", { type: "text", ref: "phone" }),
+	                    _react2.default.createElement(
+	                        "button",
+	                        { type: "submit" },
+	                        "Add New Contact"
+	                    )
+	                ),
 	                _react2.default.createElement(
 	                    "ul",
 	                    null,
@@ -21674,7 +21700,9 @@
 
 	"use strict";
 
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
 
 	var _react = __webpack_require__(7);
 
@@ -21682,38 +21710,18 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	var Contact = function Contact(_ref) {
+	    var contact = _ref.contact;
+	    return _react2.default.createElement(
+	        "li",
+	        null,
+	        contact.name,
+	        " ",
+	        contact.phone
+	    );
+	};
 
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var Contact = function (_React$Component) {
-	    _inherits(Contact, _React$Component);
-
-	    function Contact() {
-	        _classCallCheck(this, Contact);
-
-	        return _possibleConstructorReturn(this, (Contact.__proto__ || Object.getPrototypeOf(Contact)).apply(this, arguments));
-	    }
-
-	    _createClass(Contact, [{
-	        key: "render",
-	        value: function render() {
-	            return _react2.default.createElement(
-	                "li",
-	                { key: this.props.contact },
-	                this.props.contact.name,
-	                " ",
-	                this.props.contact.phone
-	            );
-	        }
-	    }]);
-
-	    return Contact;
-	}(_react2.default.Component);
-
-	module.exports = Contact;
+	exports.default = Contact;
 
 /***/ }
 /******/ ]);
